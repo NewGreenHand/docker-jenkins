@@ -33,6 +33,7 @@ RUN apt-get update -y && apt-get upgrade -y \
     && cd python3/ \
     && wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz \
     && tar -xvf Python-3.8.3.tgz \
+    && cd Python-3.8.3 \
     && ./configure --prefix=/var/jenkins_home/python3 \
     && find / -name python3 \
     && ln -s /var/jenkins_home/python3/bin/python3 /usr/bin/python3 \
