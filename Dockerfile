@@ -25,19 +25,4 @@ EXPOSE 8080  50000
 USER root
 
 # 安装python
-RUN apt-get update -y && apt-get upgrade -y \
-    && apt-get -y install gcc automake autoconf libtool make \
-    && apt-get -y install make* \
-    && apt-get -y install zlib* \
-    && apt-get -y install openssl libssl-dev \
-    && apt-get install sudo \
-    && cd /var/jenkins_home/ \
-    && mkdir python3 \
-    && cd python3/ \
-    && wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz \
-    && tar -xvf Python-3.8.3.tgz \
-    && ./configure --prefix=/var/jenkins_home/python3 \
-    && find / -name python3 \
-    && ln -s /var/jenkins_home/python3/bin/python3 /usr/bin/python3 \
-    && find / -name pip3 \
-    && ln -s /var/jenkins_home/python3/bin/pip3 /usr/bin/pip3 \
+RUN apt-get update -y && apt-get upgrade -y 
