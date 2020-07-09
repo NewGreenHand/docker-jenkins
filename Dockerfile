@@ -21,6 +21,9 @@ JAVA_OPTS=-Duser.timezone=Asia/Shanghai
 VOLUME /var/jenkins_home
 EXPOSE 8080  50000
 
+# 使用 root 用户操作
+USER root
+
 # 安装python
 RUN apt-get -y install gcc automake autoconf libtool make \
     && apt-get -y install make* \
