@@ -26,4 +26,5 @@ USER root
 
 # 安装python
 RUN apt-get update -y && apt-get upgrade -y \
-    && apt-get -y install gcc automake autoconf libtool make 
+    && apt-get -y install gcc automake autoconf libtool make \
+    && apt-get -y install openssl libssl-dev 
