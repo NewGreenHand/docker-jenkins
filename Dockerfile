@@ -9,6 +9,7 @@ JAVA_VERSION=8u242 \
 JAVA_BASE_URL=https://github.com/AdoptOpenJDK/openjdk8-upstream-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jdk_ \
 JAVA_URL_VERSION=8u242b08 \
 JENKINS_HOME=/var/jenkins_home \
+JENKINS_SLAVE_AGENT_PORT=50000 \
 REF=/usr/share/jenkins/ref \
 JENKINS_UC=https://updates.jenkins.io \
 JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental \
