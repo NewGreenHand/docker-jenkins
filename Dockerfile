@@ -41,7 +41,7 @@ RUN apt-get update -y && apt-get upgrade -y \
     && find / -name python3 \
     && ln -s /var/jenkins_home/python3/bin/python3 /usr/bin/python3 \
     && find / -name pip3 \
-    && ln -s /var/jenkins_home/python3/bin/pip3 /usr/bin/pip3 \
+    && ln -s /var/jenkins_home/python3/bin/pip3 /usr/bin/pip3
 
 # 执行sh 脚本
 ENTRYPOINT ["/tmp/python_package.sh"]
