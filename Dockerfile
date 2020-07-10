@@ -39,3 +39,4 @@ RUN apt-get update -y && apt-get upgrade -y \
     && ln -s /var/jenkins_home/python3/bin/python3 /usr/bin/python3 \
     && find / -name pip3 \
     && ln -s /var/jenkins_home/python3/bin/pip3 /usr/bin/pip3 \
+    && pip3 install requests \
