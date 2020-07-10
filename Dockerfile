@@ -22,7 +22,7 @@ VOLUME /var/jenkins_home
 EXPOSE 8080  50000
 
 # 复制文件
-CP python_package.sh /tmp/
+COPY python_package.sh /tmp/python_package.sh
 
 # 使用 root 用户操作
 USER root
