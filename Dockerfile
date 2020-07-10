@@ -21,6 +21,9 @@ JAVA_OPTS=-Duser.timezone=Asia/Shanghai
 VOLUME /var/jenkins_home
 EXPOSE 8080  50000
 
+# 复制文件
+CP python_package.sh /tmp/
+
 # 使用 root 用户操作
 USER root
 
@@ -39,4 +42,6 @@ RUN apt-get update -y && apt-get upgrade -y \
     && ln -s /var/jenkins_home/python3/bin/python3 /usr/bin/python3 \
     && find / -name pip3 \
     && ln -s /var/jenkins_home/python3/bin/pip3 /usr/bin/pip3 \
-    && pip3 install requests \
+
+# 执行sh 脚本
+ENTRYPOINT ["/tmp/python_package.sh"]
