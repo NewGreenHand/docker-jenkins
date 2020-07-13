@@ -1,3 +1,3 @@
 #!/bin/bash
 
-pip3 install requests
+/usr/bin/pip3 install requests
