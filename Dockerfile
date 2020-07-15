@@ -23,26 +23,31 @@ EXPOSE 8080  50000
 
 # 复制文件
 COPY python_package.sh /tmp/python_package.sh
+# COPY Python-3.8.3.tgz /var/jenkins_home/
 
 # 使用 root 用户操作
 USER root
 
-# 安装python
+# 修改软件源(本地测试用)
+# RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak \
+#     && echo "deb http://ftp.cn.debian.org/debian/ stretch main" > /etc/apt/sources.list \
+#     && echo "deb http://ftp.cn.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list \
+#     && echo "deb http://ftp.cn.debian.org/debian-security stretch/updates main" >> /etc/apt/sources.list
+
+# 安装编译环境
 RUN apt-get update -y && apt-get upgrade -y \
-    && apt-get -y install gcc automake autoconf libtool make \
-    && apt-get -y install openssl libssl-dev \
-    && cd /var/jenkins_home/ \
-    && mkdir python3 \
-    && cd python3/ \
+    && apt-get -y install gcc automake autoconf libtool make zlib* openssl libssl-dev 
+
+# 安装python
+RUN cd /var/jenkins_home \
     && wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz \
     && tar -xvf Python-3.8.3.tgz \
-    && cd Python-3.8.3 \
-    && ./configure --prefix=/var/jenkins_home/python3 \
-    && find / -name python3 \
-    && ln -s /var/jenkins_home/python3/bin/python3 /usr/bin/python3 \
-    && find / -name pip3 \
-    && ln -s /var/jenkins_home/python3/bin/pip3 /usr/bin/pip3 \
-    && chmod 777 /tmp/python_package.sh
+    && cd Python-3.8.3 && ./configure --prefix=/usr/local/python3 --with-ssl && make && make install \
+    && ln -s /usr/local/python3/bin/python3 /usr/bin/python3 \
+    && ln -s /usr/local/python3/bin/pip3 /usr/bin/pip3
 
-# 执行sh 脚本
-ENTRYPOINT ["/tmp/python_package.sh"]
+# 安装 python 包
+RUN pip3 install requests
+
+# 执行sh 脚本(先授权)chmod 777 /tmp/python_package.sh
+# ENTRYPOINT ["/tmp/python_package.sh"]
