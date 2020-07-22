@@ -1,53 +1,27 @@
-# docker jenkins
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:lts-alpine
 
-# environment settings
-ENV PATH=/usr/local/openjdk-8/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-LANG=C.UTF-8 \
-JAVA_HOME=/usr/local/openjdk-8 \
-JAVA_VERSION=8u242 \
-JAVA_BASE_URL=https://github.com/AdoptOpenJDK/openjdk8-upstream-binaries/releases/download/jdk8u242-b08/OpenJDK8U-jdk_ \
-JAVA_URL_VERSION=8u242b08 \
-JENKINS_HOME=/var/jenkins_home \
-JENKINS_SLAVE_AGENT_PORT=50000 \
-REF=/usr/share/jenkins/ref \
-JENKINS_UC=https://updates.jenkins.io \
-JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental \
-JENKINS_INCREMENTALS_REPO_MIRROR=https://repo.jenkins-ci.org/incrementals \
-COPY_REFERENCE_FILE_LOG=/var/jenkins_home/copy_reference_file.log \
-JAVA_OPTS=-Duser.timezone=Asia/Shanghai
-
-# ports and volumes
-VOLUME /var/jenkins_home
-EXPOSE 8080  50000
-
-# 复制文件
-COPY python_package.sh /tmp/python_package.sh
-# COPY Python-3.8.3.tgz /var/jenkins_home/
-
-# 使用 root 用户操作
+# 使用 root 用户
 USER root
 
 # 修改软件源(本地测试用)
-# RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak \
-#     && echo "deb http://ftp.cn.debian.org/debian/ stretch main" > /etc/apt/sources.list \
-#     && echo "deb http://ftp.cn.debian.org/debian/ stretch-updates main" >> /etc/apt/sources.list \
-#     && echo "deb http://ftp.cn.debian.org/debian-security stretch/updates main" >> /etc/apt/sources.list
+#RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
-# 安装编译环境
-RUN apt-get update -y && apt-get upgrade -y \
-    && apt-get -y install gcc automake autoconf libtool make zlib* openssl libssl-dev 
+# 安装 python
+RUN apk add --no-cache python3 python3-dev && \
+    python3 -m ensurepip && \
+    rm -r /usr/lib/python*/ensurepip && \
+    pip3 install --upgrade pip setuptools && \
+    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
+    if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
+    rm -r /root/.cache
 
-# 安装python
-RUN cd /var/jenkins_home \
-    && wget https://www.python.org/ftp/python/3.8.3/Python-3.8.3.tgz \
-    && tar -xvf Python-3.8.3.tgz \
-    && cd Python-3.8.3 && ./configure --prefix=/usr/local/python3 --with-ssl && make && make install \
-    && ln -s /usr/local/python3/bin/python3 /usr/bin/python3 \
-    && ln -s /usr/local/python3/bin/pip3 /usr/bin/pip3
+# 安装 pip 第三方包
+COPY requirements.txt /server_requirements.txt
+RUN pip install -U pipenv && \
+    pip install --extra-index-url=https://pypi.python.org/simple/ --no-cache-dir -r /server_requirements.txt
 
-# 安装 python 包
-RUN pip3 install requests
+# 安装 Jenkins 插件
+# COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+# RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
-# 执行sh 脚本(先授权)chmod 777 /tmp/python_package.sh
-# ENTRYPOINT ["/tmp/python_package.sh"]
+USER jenkins
