@@ -1,5 +1,7 @@
 FROM jenkins/jenkins:lts-alpine
 
+ENV JAVA_OPTS=-Duser.timezone=Asia/Shanghai
+
 # 使用 root 用户
 USER root
 
