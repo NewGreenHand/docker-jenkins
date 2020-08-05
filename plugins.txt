@@ -1,4 +1,2 @@
-configuration-as-code
-github-branch-source
-bitbucket
-shiningpanda
+locale
+localization-zh-cn

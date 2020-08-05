@@ -1,6 +1,6 @@
 FROM jenkins/jenkins:lts-alpine
 
-ENV JAVA_OPTS=-Duser.timezone=Asia/Shanghai
+ENV JAVA_OPTS=-Duser.timezone=Asia/Shanghai -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
 
 # 使用 root 用户
 USER root
@@ -23,7 +23,7 @@ RUN pip install -U pipenv && \
     pip install --extra-index-url=https://pypi.python.org/simple/ --no-cache-dir -r /server_requirements.txt
 
 # 安装 Jenkins 插件
-# COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-# RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
 USER jenkins
