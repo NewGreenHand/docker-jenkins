@@ -22,12 +22,10 @@ COPY requirements.txt /server_requirements.txt
 RUN pip install -U pipenv && \
     pip install --extra-index-url=https://pypi.python.org/simple/ --no-cache-dir -r /server_requirements.txt
 
-# 修改插件源
-RUN cd /var/jenkins_home/updates && \
-    sed -i 's/http:\/\/updates.jenkins-ci.org\/download/https:\/\/mirrors.tuna.tsinghua.edu.cn\/jenkins/g' default.json && sed -i 's/http:\/\/www.google.com/https:\/\/www.baidu.com/g' default.json
-
 # 安装 Jenkins 插件
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+
+COPY root/ /
 
 USER jenkins
