@@ -1,2 +1,4 @@
 locale
 localization-zh-cn
+publish-over-ssh
+deploy
