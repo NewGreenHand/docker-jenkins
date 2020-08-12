@@ -1,6 +1,8 @@
 FROM jenkins/jenkins:lts-alpine
 
-ENV JAVA_OPTS=-Duser.timezone=Asia/Shanghai -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
+ENV JAVA_OPTS="-Duser.timezone=Asia/Shanghai -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2"
+ENV GROUPID=65537
+ENV JENKINS_OPTS="-Dhudson.model.UpdateCenter.updateCenterUrl=https://updates.jenkins-zh.cn/update-center.json"
 
 # 使用 root 用户
 USER root
@@ -28,4 +30,12 @@ RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
 COPY root/ /
 
+# 下载插件源证书
+RUN curl 'https://raw.githubusercontent.com/jenkins-zh/docker-zh/master/mirror-adapter.crt' -o $JENKINS_HOME/war/WEB-INF/update-center-rootCAs/mirror-adapter.crt
+
 USER jenkins
+
+VOLUME [ "/var/jenkins_home" ]
+
+EXPOSE 8080 50000
+

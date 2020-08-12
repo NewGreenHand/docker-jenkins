@@ -3,7 +3,7 @@
 
 ## 包含
 
-* jenkins/jenkins:lts-alpine
+* fillpit/jenkins:lts-alpine
 * Python3
 
 
@@ -11,13 +11,16 @@
 
 - 运行命令:
 ```
-docker run -d 
-    --name=jenkins 
-    -p 8080:8080 
-    -p 50000:50000 
-    -v jenkins_home:/var/jenkins_home 
-    --env JAVA_OPTS="-Dhudson.footerURL=$server_url -Dhudson.model.DirectoryBrowserSupport.CSP= -Duser.timezone=Europe/Moscow" \
-    manycoding/jenkins-python
+docker run -d \
+    --name=fillpit-jenkins \
+    -p 8080:8080 \
+    -p 50000:50000 \
+    -v /volume1/docker/jenkins:/var/jenkins_home \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $(which docker):/usr/bin/docker\
+    --env PUID="1024" \
+    --env PGID="100" \
+    fillpit/jenkins:lts-alpine 
 ```
 
 ### 文件说明
