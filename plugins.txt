@@ -2,3 +2,5 @@ locale
 localization-zh-cn
 publish-over-ssh
 deploy
+git
+qy-wechat-notification
