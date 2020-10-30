@@ -5,8 +5,8 @@ on:
       - 'master'      
     paths-ignore:
       - README.md
-  schedule:
-    - cron: 0 18 * * 5
+#   schedule:
+#     - cron: 0 18 * * 5
 
 jobs:
   buildx:
