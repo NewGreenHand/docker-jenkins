@@ -1,7 +1,7 @@
 FROM jenkins/jenkins:lts-alpine
 
 ENV JAVA_OPTS="-Duser.timezone=Asia/Shanghai -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2"
-ENV GROUPID=65537
+ENV GROUPID=100
 #ENV JENKINS_OPTS="-Dhudson.model.UpdateCenter.updateCenterUrl=https://updates.jenkins-zh.cn/update-center.json"
 
 # 使用 root 用户
