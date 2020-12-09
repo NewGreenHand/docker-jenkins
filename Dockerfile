@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:lts-alpine
+FROM jenkins/jenkins:2.263.1-lts-alpine
 
 ENV JAVA_OPTS="-Duser.timezone=Asia/Shanghai -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2"
 ENV GROUPID=100
